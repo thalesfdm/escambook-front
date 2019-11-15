@@ -2,7 +2,8 @@
 <div id="main-wrapper">
   <div v-if="user" id="user-container">
     <div id="user-card">
-      <img v-bind:src="user.image.cloudImage">
+      <img v-if="user.image" v-bind:src="user.image.cloudImage">
+      <img v-if="!user.image" src="https://res.cloudinary.com/escambook/image/upload/v1573855303/profilepic/default-profilepic.png">
       <div id="user-info">
         <span id="user-name">{{user.name}}</span>
         <span id="user-email">{{user.email}}</span>

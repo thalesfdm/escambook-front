@@ -2,7 +2,8 @@
 <div id="main-wrapper">
   <div id="book-container">
     <div id="book-card" v-for="book in books" v-bind:key="book.id">
-      <img v-bind:src="book.image.cloudImage">
+      <img v-if="book.image" v-bind:src="book.image.cloudImage">
+      <img v-if="!book.image" src="https://res.cloudinary.com/escambook/image/upload/v1573856107/coverpic/default-coverpic.jpg">
       <div id="book-info">
         <span id="book-title">{{book.title}}</span>
         <span id="book-author">{{book.author}}</span>

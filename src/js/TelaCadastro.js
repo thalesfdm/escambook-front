@@ -8,12 +8,6 @@ export default {
     }
   },
 
-  beforeMount() {
-    if (this.token) {
-      router.push('/perfil');
-    }
-  },
-
   methods: {
 
     sendForm() {
