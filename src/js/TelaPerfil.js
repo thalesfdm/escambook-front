@@ -1,19 +1,25 @@
 import axios from 'axios'
+import { groupBy } from 'lodash'
 
 export default {
   data() {
     return {
       addBook: [],
+      bookCopies: {},
+      bookCopiesLength: null,
+      bookSwap: {},
       books: {},
       copies: {},
       pending: {},
-      searchString: '',
       removeBook: [],
+      searchString: '',
+      sectionTitle: 'Minha Biblioteca',
       token: localStorage.getItem('x-auth-token') || null,
       user: {},
       viewLibrary: true,
+      viewPending: false,
       viewSearch: false,
-      viewPending: false
+      viewSwap: false
     }
   },
 
@@ -52,12 +58,40 @@ export default {
         })
     },
 
+    getBookCopies(bookId) {
+      axios
+        .get(`http://localhost:3900/api/users/books/${bookId}`)
+        .then((res) => {
+          this.bookCopiesLength = res.data.copies.length;
+          this.bookCopies = groupBy(res.data.copies, 'user.id');
+          this.getBookSwap(bookId);
+          this.showSwap();
+        })
+        .catch((err) => {
+          this.bookCopies = {};
+          console.log(err);
+        });
+    },
+
+    getBookSwap(bookId) {
+      axios
+        .get(`http://localhost:3900/api/books/${bookId}`)
+        .then((res) => {
+          this.bookSwap = res.data.book;
+        })
+        .catch((err) => {
+          this.bookSwap = {};
+          console.log(err);
+        });
+    },
+
     getBooks() {
       axios
-        .get(`http://localhost:3900/api/books/search/title/${this.searchString}`)
+        .get(`http://localhost:3900/api/books/search/all/${this.searchString}`)
         .then((res) => {
           this.addBook = [];
           this.books = res.data.books;
+          if (this.viewSwap) this.showSearch();
         })
         .catch((err) => {
           this.books = {};
@@ -90,24 +124,38 @@ export default {
     },
 
     showLibrary() {
-      this.removeBook = [];
       this.copies = this.getUserCopies(this.user.id);
+      this.removeBook = [];
+      this.sectionTitle = 'Minha Biblioteca';
+      this.viewLibrary = true;
       this.viewPending = false;
       this.viewSearch = false;
-      this.viewLibrary = true;
+      this.viewSwap = false;
     },
 
     showPending() {
+      this.sectionTitle = 'Notificações';
+      this.viewLibrary = false;
       this.viewPending = true;
       this.viewSearch = false;
-      this.viewLibrary = false;
+      this.viewSwap = false;
     },
 
     showSearch() {
       this.addBook = [];
+      this.sectionTitle = 'Buscar Livros';
+      this.viewLibrary = false;
       this.viewPending = false;
       this.viewSearch = true;
+      this.viewSwap = false;
+    },
+
+    showSwap() {
+      this.sectionTitle = 'Buscar Cópias';
       this.viewLibrary = false;
+      this.viewPending = false;
+      this.viewSearch = false;
+      this.viewSwap = true;
     }
 
   }

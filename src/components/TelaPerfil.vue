@@ -22,7 +22,7 @@
       <button class="user-menu-button">Seguidores</button>
     </div>
     <div id="user-library-menu">
-      <span>Minha Biblioteca</span>
+      <span id="user-library-menu-title">{{sectionTitle}}</span>
       <button v-on:click="showLibrary" class="user-library-menu-img-button">
         <img src="../images/books.png">
       </button>
@@ -44,6 +44,7 @@
           <div class="library-book-info">
             <span class="library-book-title">{{copy.book.title}}</span>
             <span class="library-book-author">{{copy.book.author}}</span>
+            <span class="library-book-edition">{{copy.condition}}</span>
           </div>
           <span v-if="copy.available && !removeBook.includes(`remove-book-${copy.id}`)" style="color: green;">
             &#x2714; Disponível
@@ -76,10 +77,10 @@
     </div>
     <div v-if="viewSearch" class="library-container">
       <div class="library-card" v-for="book in books" v-bind:key="book.id">
-        <img v-if="book.image" v-bind:src="book.image.cloudImage">
-        <img v-if="!book.image" src="https://res.cloudinary.com/escambook/image/upload/v1573856107/coverpic/default-coverpic.jpg">
+        <img class="book-cover" v-if="book.image" v-bind:src="book.image.cloudImage">
+        <img class="book-cover" v-if="!book.image" src="https://res.cloudinary.com/escambook/image/upload/v1573856107/coverpic/default-coverpic.jpg">
         <div class="library-book-info-search">
-          <span class="library-book-title">{{book.title}}</span>
+          <span class="library-book-title" style="color: #000">{{book.title}}</span>
           <span class="library-book-author">{{book.author}}</span>
           <span v-if="book.edition" class="library-book-edition">{{book.edition}}ª Edição</span>
           <span v-if="book.publisher" class="library-book-edition">{{book.publisher}}</span>
@@ -92,10 +93,83 @@
           <button disabled v-if="addBook.includes(`add-book-${book.id}`)" class="my-copy-added-button" v-bind:id="`add-book-${book.id}`">
             <img src="../images/tick.png">
           </button>
+          <button class="library-book-button" v-on:click="getBookCopies(book.id)">
+            <img src="../images/swap.png">
+          </button>
         </div>
       </div>
     </div>
     <!-- fim: BUSCAR LIVROS -->
+
+    <!-- inicio: TROCAR LIVRO -->
+    <div v-if="viewSwap" class="library-search-bar">
+      <form class="nav-search">
+        <input v-model="searchString" placeholder="O que você procura? Livros, autores..."></input>
+        <button v-on:click="getBooks"><img src="@/images/search.png" alt=""></button>
+      </form>
+    </div>
+    <div v-if="viewSwap" class="library-container">
+      <div class="library-card">
+        <img class="book-cover" v-if="bookSwap.image" v-bind:src="bookSwap.image.cloudImage">
+        <img class="book-cover" v-if="!bookSwap.image" src="https://res.cloudinary.com/escambook/image/upload/v1573856107/coverpic/default-coverpic.jpg">
+        <div class="library-book-info-search">
+          <span class="library-book-title" style="color: #000">{{bookSwap.title}}</span>
+          <span class="library-book-author">{{bookSwap.author}}</span>
+          <span v-if="bookSwap.edition" class="library-book-edition">{{bookSwap.edition}}ª Edição</span>
+          <span v-if="bookSwap.publisher" class="library-book-edition">{{bookSwap.publisher}}</span>
+          <span v-if="bookSwap.publisher" class="library-book-edition">ISBN13: {{bookSwap.isbn}}</span>
+        </div>
+        <div class="library-book-button-menu">
+          <button disabled class="library-book-button">
+            <img src="../images/plus.png">
+          </button>
+          <button disabled class="library-book-button">
+            <img src="../images/swap.png">
+          </button>
+        </div>
+      </div>
+    </div>
+    <div v-if="viewSwap" class="copies-found">
+      <span>{{bookCopiesLength}} cópia(s) encontrada(s)!</span>
+    </div>
+    <div v-if="viewSwap" class="copy-owner-card" v-for="owner in bookCopies" v-bind:key="owner.id">
+      <div class="copy-owner-info">
+        <img v-if="owner[0].user.image" v-bind:src="owner[0].user.image.cloudimage">
+        <img v-if="!owner[0].user.image" src="https://res.cloudinary.com/escambook/image/upload/v1573855303/profilepic/default-profilepic.png">
+        <div class="copy-owner-info-name-address">
+          <span style="font-weight: 700">{{owner[0].user.name}}</span>
+          <span style="font-size: 11pt">{{owner[0].user.address.city}} - {{owner[0].user.address.district}}</span>
+        </div>
+      </div>
+      <div v-for="copy in owner" v-bind:key="copy.id">
+        <div class="copy-info">
+          <div class="copy-info-wrapper" style="width: 20%;">
+            <img v-if="bookSwap.image" v-bind:src="bookSwap.image.cloudImage">
+            <img v-if="!bookSwap.image" src="https://res.cloudinary.com/escambook/image/upload/v1573856107/coverpic/default-coverpic.jpg">
+          </div>
+          <div class="copy-info-wrapper" style="width: 60%;">
+            <span v-if="copy.available && owner[0].user.id != user.id" style="color: green;">
+              &#x2714; Disponível
+            </span>
+            <span v-if="!copy.available && owner[0].user.id != user.id" style="color: gray;">
+              &#x1f6c7; Indisponível
+            </span>
+            <span v-if="owner[0].user.id == user.id" style="color: gray;">
+              &#x1f6c7; Sua cópia
+            </span>
+            <span style="color: gray;">
+              {{copy.condition}}
+            </span>
+          </div>
+          <div class="copy-info-wrapper" style="width: 20%;">
+            <button v-bind:disabled="owner[0].user.id == user.id" class="library-book-button">
+              <img src="../images/swap.png">
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- fim: TROCAR LIVRO -->
 
   </div>
 </div>
@@ -191,6 +265,10 @@
   width: 100vw;
 }
 
+#user-library-menu-title {
+  width: 50%;
+}
+
 .user-library-menu-img-button {
   cursor: pointer;
   display: flex;
@@ -226,7 +304,8 @@
   width: 100vw;
 }
 
-.library-card>img {
+.library-card>img,
+.book-cover {
   box-shadow: -4px 6px 4px #666;
   height: 120px;
   width: 80px;
@@ -324,6 +403,84 @@
   font-size: 12pt;
   padding: 6px;
   width: 100vw;
+}
+
+.copies-found {
+  align-items: center;
+  background-color: #444;
+  box-shadow: -1px 2px 2px #666;
+  color: #fff;
+  display: flex;
+  font-weight: 700;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-top: 8px;
+  padding: 6px;
+  width: 100vw;
+}
+
+.copy-owner-card {
+  background-color: #eee;
+  box-shadow: -1px 2px 2px #666;
+  display: flex;
+  flex-direction: column;
+  margin-top: 8px;
+  width: 100vw;
+}
+
+.copy-owner-info {
+  background-color: #ddd;
+  align-items: center;
+  display: flex;
+  padding: 8px;
+}
+
+.copy-owner-info>img {
+  border-radius: 32px;
+  box-shadow: -1px 2px 2px #666;
+  height: 32px;
+  width: 32px;
+}
+
+.copy-owner-info-name-address {
+  display: flex;
+  flex-direction: column;
+  margin-left: 12px;
+}
+
+/*
+.copy-owner-info-address {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+*/
+
+.copy-info {
+  background-color: #eee;
+  justify-content: space-around;
+  border-top: 1px solid #ccc;
+  align-items: center;
+  display: flex;
+  padding: 8px;
+}
+
+.copy-info-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.copy-info>.copy-info-wrapper>img {
+  box-shadow: -1px 2px 2px #666;
+  height: 45px;
+  width: 30px;
+}
+
+.copy-info>.copy-info-wrapper>span {
+  margin-left: 8px;
+  font-size: 11pt;
 }
 
 /* fim: BIBLIOTECA */
