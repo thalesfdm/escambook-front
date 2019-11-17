@@ -4,6 +4,7 @@ import TelaCadastro from '@/components/TelaCadastro'
 import TelaInicial from '@/components/TelaInicial'
 import TelaLogin from '@/components/TelaLogin'
 import TelaPerfil from '@/components/TelaPerfil'
+import TelaCadastroLivro from '@/components/TelaCadastroLivro'
 
 Vue.use(Router)
 
@@ -33,6 +34,12 @@ export const router = new Router({
     path: '/perfil',
     name: 'TelaPerfil',
     component: TelaPerfil,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/cadastro/livro',
+    name: 'TelaCadastroLivro',
+    component: TelaCadastroLivro,
     meta: { requiresAuth: true }
   }]
 });
