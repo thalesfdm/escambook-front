@@ -18,9 +18,9 @@
                 <span>Meu perfil</span>
               </div>
             </router-link>
-            <router-link :to="{name: 'TelaPerfil'}">
+            <router-link :to="{name: 'TelaCadastroLivro'}">
               <div v-on:click="slideToggle" class="nav-menu-item">
-                <span>...</span>
+                <span>Cadastrar livro</span>
               </div>
             </router-link>
             <router-link :to="{name: 'TelaPerfil'}">
