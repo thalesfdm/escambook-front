@@ -9,6 +9,7 @@ export default {
 
   beforeMount() {
     this.getAllBooks();
+    this.$bus.$emit('searchBar', true);
   },
 
   methods: {

@@ -8,6 +8,10 @@ export default {
     }
   },
 
+  beforeMount() {
+    this.$bus.$emit('searchBar', false);
+  },
+
   methods: {
 
     sendForm() {

@@ -51,12 +51,12 @@
     </nav>
     <div v-if="!isLogged" class="nav-welcome">
       <span>A maior rede social para troca de livros!</span>
-      <form class="nav-search">
+      <form v-if="searchBar" class="nav-search">
         <input placeholder="O que você procura? Livros, autores..."></input>
         <button><img src="@/images/search.png" alt=""></button>
       </form>
     </div>
-    <div v-if="isLogged" class="nav-welcome">
+    <div v-if="isLogged && searchBar" class="nav-welcome">
       <form class="nav-search">
         <input placeholder="O que você procura? Livros, autores..."></input>
         <button><img src="@/images/search.png" alt=""></button>
@@ -76,13 +76,12 @@
     </nav>
     <div v-if="!isLogged" class="nav-welcome">
       <span>A maior rede social para troca de livros!</span>
-      <form class="nav-search">
+      <form v-if="searchBar" class="nav-search">
         <input placeholder="O que você procura? Livros, autores..."></input>
         <button><img src="@/images/search.png" alt=""></button>
       </form>
     </div>
-
-    <div v-if="isLogged" class="nav-welcome">
+    <div v-if="isLogged && searchBar" class="nav-welcome">
       <form class="nav-search">
         <input placeholder="O que você procura? Livros, autores..."></input>
         <button><img src="@/images/search.png" alt=""></button>

@@ -6,6 +6,7 @@ export default {
     return {
       isLogged: this.checkIfIsLogged(),
       name: null,
+      searchBar: true,
       token: localStorage.getItem('x-auth-token') || null
     }
   },
@@ -13,6 +14,9 @@ export default {
   created() {
     this.$bus.$on('loggedIn', () => {
       this.isLogged = this.checkIfIsLogged();
+    });
+    this.$bus.$on('searchBar', (value) => {
+      this.searchBar = value;
     });
   },
 

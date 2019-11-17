@@ -9,6 +9,10 @@ export default {
     }
   },
 
+  beforeMount() {
+    this.$bus.$emit('searchBar', false);
+  },
+
   created() {
     if (this.$route.params.justRegistered) {
       this.justRegistered = this.$route.params.justRegistered;
