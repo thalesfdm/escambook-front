@@ -1,10 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import TelaCadastro from '@/components/TelaCadastro'
+import TelaCadastroLivro from '@/components/TelaCadastroLivro'
 import TelaInicial from '@/components/TelaInicial'
 import TelaLogin from '@/components/TelaLogin'
 import TelaPerfil from '@/components/TelaPerfil'
-import TelaCadastroLivro from '@/components/TelaCadastroLivro'
+import TelaTroca from '@/components/TelaTroca'
 
 Vue.use(Router)
 
@@ -20,9 +21,16 @@ export const router = new Router({
     meta: { requiresLogout: true }
   },
   {
+    path: '/cadastro/livro',
+    name: 'TelaCadastroLivro',
+    component: TelaCadastroLivro,
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/',
     name: 'TelaInicial',
-    component: TelaInicial
+    component: TelaInicial,
+    meta: { requiresLogout: true }
   },
   {
     path: '/login',
@@ -37,9 +45,9 @@ export const router = new Router({
     meta: { requiresAuth: true }
   },
   {
-    path: '/cadastro/livro',
-    name: 'TelaCadastroLivro',
-    component: TelaCadastroLivro,
+    path: '/troca',
+    name: 'TelaTroca',
+    component: TelaTroca,
     meta: { requiresAuth: true }
   }]
 });

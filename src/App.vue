@@ -36,11 +36,23 @@ html {
 }
 
 #main-wrapper {
-  padding-bottom: 60px;
+  padding-bottom: 54px;
 }
 
 #app {
   position: relative;
   min-height: 100%;
+}
+
+.select-radio {
+  align-items: center;
+  background-color: #444;
+  box-shadow: -1px 2px 2px #666;
+  color: #fff;
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 8px;
+  padding: 6px;
+  width: 100vw;
 }
 </style>

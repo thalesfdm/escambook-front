@@ -31,12 +31,26 @@
       </button>
       <button v-on:click="showPending" class="user-library-menu-img-button">
         <img src="../images/sino.png">
+        <div v-if="pending" id="pending-length">
+          {{pending.length}}
+        </div>
       </button>
     </div>
     <!-- fim: PERFIL DO USUÁRIO -->
 
     <!-- inicio: BIBLIOTECA DO USUÁRIO -->
     <div v-if="viewLibrary" class="library-container">
+      <div class="select-radio">
+        Ordenar por:
+        <div>
+          <input v-model="ordenarBiblioteca" type="radio" name="ordenar-biblioteca" value="A">
+          <span>Autor</span>
+        </div>
+        <div>
+          <input v-model="ordenarBiblioteca" type="radio" name="ordenar-biblioteca" value="T">
+          <span>Título</span>
+        </div>
+      </div>
       <div class="library-card" v-for="copy in copies" v-bind:key="copy.id">
         <img v-if="copy.book.image" v-bind:src="copy.book.image.cloudimage">
         <img v-if="!copy.book.image" src="https://res.cloudinary.com/escambook/image/upload/v1573856107/coverpic/default-coverpic.jpg">
@@ -74,6 +88,17 @@
         <input v-model="searchString" placeholder="O que você procura? Livros, autores..."></input>
         <button v-on:click="getBooks"><img src="@/images/search.png" alt=""></button>
       </form>
+    </div>
+    <div v-if="viewSearch" class="select-radio">
+      Ordenar por:
+      <div>
+        <input v-model="ordenarBusca" type="radio" name="ordenar-busca" value="A">
+        <span>Autor</span>
+      </div>
+      <div>
+        <input v-model="ordenarBusca" type="radio" name="ordenar-busca" value="T">
+        <span>Título</span>
+      </div>
     </div>
     <div v-if="viewSearch" class="library-container">
       <div class="library-card" v-for="book in books" v-bind:key="book.id">
@@ -148,13 +173,13 @@
             <img v-if="!bookSwap.image" src="https://res.cloudinary.com/escambook/image/upload/v1573856107/coverpic/default-coverpic.jpg">
           </div>
           <div class="copy-info-wrapper" style="width: 60%;">
-            <span v-if="copy.available && owner[0].user.id != user.id" style="color: green;">
+            <span v-if="copy.available && copy.user.id != user.id" style="color: green;">
               &#x2714; Disponível
             </span>
-            <span v-if="!copy.available && owner[0].user.id != user.id" style="color: gray;">
+            <span v-if="!copy.available && copy.user.id != user.id" style="color: gray;">
               &#x1f6c7; Indisponível
             </span>
-            <span v-if="owner[0].user.id == user.id" style="color: gray;">
+            <span v-if="copy.user.id == user.id" style="color: gray;">
               &#x1f6c7; Sua cópia
             </span>
             <span style="color: gray;">
@@ -162,7 +187,7 @@
             </span>
           </div>
           <div class="copy-info-wrapper" style="width: 20%;">
-            <button v-bind:disabled="owner[0].user.id == user.id" class="library-book-button">
+            <button v-on:click="startSwap(copy, bookSwap)" v-bind:disabled="copy.user.id == user.id" class="library-book-button">
               <img src="../images/swap.png">
             </button>
           </div>
@@ -170,6 +195,50 @@
       </div>
     </div>
     <!-- fim: TROCAR LIVRO -->
+
+    <!-- inicio: PENDENTES -->
+    <div v-if="viewPending" class="select-radio">
+      Mostrar:
+      <div>
+        <input v-model="pendingSwaps" type="radio" name="pending" value="O">
+        <span>Para mim</span>
+      </div>
+      <div>
+        <input v-model="pendingSwaps" type="radio" name="pending" value="M">
+        <span>Minhas</span>
+      </div>
+    </div>
+    <div v-if="viewPending && pendingSwaps === 'O'" v-for="swap in pending" v-bind:key="swap.id">
+      <div class="swap-user-card">
+        <div class="swap-user-info">
+          <img v-if="swap.swapusers[0].user.image" v-bind:src="swap.swapusers[0].user.image.cloudimage">
+          <img v-if="!swap.swapusers[0].user.image" src="https://res.cloudinary.com/escambook/image/upload/v1573855303/profilepic/default-profilepic.png">
+          <div class="swap-user-info-name-address">
+            <span style="font-weight: 700">{{swap.swapusers[0].user.name}}</span>
+            <span style="font-size: 11pt">{{swap.swapusers[0].user.address.city}} - {{swap.swapusers[0].user.address.district}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="swap-owner-copy-info">
+        <div class="swap-owner-copy-info-wrapper" style="width: 14%;">
+          <img v-if="swap.swapcopies[0].copy.book.image" v-bind:src="swap.swapcopies[0].copy.book.image.cloudimage">
+          <img v-if="!swap.swapcopies[0].copy.book.image" src="https://res.cloudinary.com/escambook/image/upload/v1573856107/coverpic/default-coverpic.jpg">
+        </div>
+        <div class="swap-owner-copy-info-wrapper" style="width: 86%;">
+          <span class="swap-owner-copy-title" style="font-weight: 700">{{swap.swapcopies[0].copy.book.title}}</span>
+          <span class="swap-owner-copy-author" style="font-style: italic">{{swap.swapcopies[0].copy.book.author}}</span>
+        </div>
+        <div style="display: flex;">
+          <button style="margin-right: 8px;" class="library-book-button" v-on:click="getBookCopies(book.id)">
+            <img src="../images/tick.png">
+          </button>
+          <button class="library-book-button" v-on:click="getBookCopies(book.id)">
+            <img src="../images/close.png">
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- fim: PENDENTES -->
 
   </div>
 </div>
@@ -267,6 +336,22 @@
 
 #user-library-menu-title {
   width: 50%;
+}
+
+#pending-length {
+  display: flex;
+  border-radius: 32px;
+  background-color: red;
+  color: white;
+  justify-content: center;
+  align-items: center;
+  font-size: 12pt;
+  font-weight: 700;
+  position: absolute;
+  margin-left: 22px;
+  margin-bottom: 22px;
+  height: 29px;
+  width: 29px;
 }
 
 .user-library-menu-img-button {
@@ -484,6 +569,63 @@
 }
 
 /* fim: BIBLIOTECA */
+
+.swap-user-card {
+  background-color: #eee;
+  box-shadow: -1px 2px 2px #666;
+  display: flex;
+  flex-direction: column;
+  margin-top: 8px;
+  width: 100vw;
+}
+
+.swap-user-info {
+  background-color: #ddd;
+  align-items: center;
+  display: flex;
+  padding: 8px;
+}
+
+.swap-user-info>img {
+  border-radius: 32px;
+  box-shadow: -1px 2px 2px #666;
+  height: 32px;
+  width: 32px;
+}
+
+.swap-user-info-name-address {
+  display: flex;
+  flex-direction: column;
+  margin-left: 12px;
+}
+
+.swap-owner-copy-info {
+  background-color: #eee;
+  box-shadow: -1px 2px 2px #666;
+  justify-content: space-around;
+  border-top: 1px solid #ccc;
+  align-items: center;
+  display: flex;
+  padding: 8px;
+}
+
+.swap-owner-copy-info-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.swap-owner-copy-info>.swap-owner-copy-info-wrapper>img {
+  box-shadow: -1px 2px 2px #666;
+  height: 45px;
+  width: 30px;
+}
+
+.swap-owner-copy-info>.swap-owner-copy-info-wrapper>span {
+  margin-left: 8px;
+  font-size: 11pt;
+}
 </style>
 
 <script type="text/javascript" src="../js/TelaPerfil.js"></script>

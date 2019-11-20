@@ -1,5 +1,6 @@
 import axios from 'axios'
-import { groupBy } from 'lodash'
+import { router } from '@/router'
+import { groupBy, sortBy } from 'lodash'
 
 export default {
   data() {
@@ -10,7 +11,11 @@ export default {
       bookSwap: {},
       books: {},
       copies: {},
+      ordenarBiblioteca: 'A',
+      ordenarBusca: 'A',
       pending: {},
+      pendingMine: {},
+      pendingSwaps: 'O',
       removeBook: [],
       searchString: '',
       sectionTitle: 'Minha Biblioteca',
@@ -26,6 +31,25 @@ export default {
   beforeMount() {
     this.user = this.getUser();
     this.$bus.$emit('searchBar', false);
+  },
+
+  watch: {
+
+    ordenarBiblioteca: function (val) {
+      if (val === 'A') {
+        this.copies = sortBy(this.copies, ['book.author']);
+      } else if (val === 'T') {
+        this.copies = sortBy(this.copies, ['book.title']);
+      }
+    },
+
+    ordenarBusca: function (val) {
+      if (val === 'A') {
+        this.books = sortBy(this.books, ['author']);
+      } else if (val === 'T') {
+        this.books = sortBy(this.books, ['title']);
+      }
+    }
   },
 
   methods: {
@@ -91,6 +115,11 @@ export default {
         .then((res) => {
           this.addBook = [];
           this.books = res.data.books;
+          if (this.ordenarBusca === 'A') {
+            this.books = sortBy(this.books, ['author']);
+          } else if (this.ordenarBusca === 'T') {
+            this.books = sortBy(this.books, ['title']);
+          }
           if (this.viewSwap) this.showSearch();
         })
         .catch((err) => {
@@ -99,11 +128,27 @@ export default {
         });
     },
 
+    getPending() {
+      axios
+        .get('http://localhost:3900/api/swaps/pending/', { headers: { 'x-auth-token': this.token } })
+        .then((res) => {
+          this.pending = res.data.swaps;
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+    },
+
     getUserCopies(id) {
       axios
         .get(`http://localhost:3900/api/users/${id}/books`, { headers: { 'x-auth-token': this.token } })
         .then((res) => {
           this.copies = res.data.user.books;
+          if (this.ordenarBiblioteca === 'A') {
+            this.copies = sortBy(this.copies, ['book.author']);
+          } else if (this.ordenarBiblioteca === 'T') {
+            this.copies = sortBy(this.copies, ['book.title']);
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -116,6 +161,7 @@ export default {
         .then((res) => {
           this.user = res.data.user;
           this.copies = this.getUserCopies(this.user.id);
+          this.pending = this.getPending();
         })
         .catch((err) => {
           localStorage.removeItem('x-auth-token');
@@ -156,6 +202,10 @@ export default {
       this.viewPending = false;
       this.viewSearch = false;
       this.viewSwap = true;
+    },
+
+    startSwap(copy, book) {
+      router.push({ name: 'TelaTroca', params: { copy, book } });
     }
 
   }

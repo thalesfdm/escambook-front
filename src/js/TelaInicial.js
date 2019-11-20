@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { sampleSize, shuffle } from 'lodash'
 
 export default {
   data() {
@@ -15,11 +16,13 @@ export default {
   methods: {
 
     getAllBooks() {
-      let vue = this;
       axios
         .get('http://localhost:3900/api/books')
         .then((res) => {
-          vue.books = res.data.books;
+          let books = res.data.books;
+          // books = sampleSize(books, 8);
+          books = shuffle(books);
+          this.books = books;
         })
         .catch((err) => {
           console.log(err);

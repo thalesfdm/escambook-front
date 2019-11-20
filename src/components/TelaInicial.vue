@@ -1,12 +1,17 @@
 <template>
 <div id="main-wrapper">
-  <div id="book-container">
-    <div id="book-card" v-for="book in books" v-bind:key="book.id">
+  <div id="start-book-container">
+    <div class="start-book-card" v-for="book in books" v-bind:key="book.id">
       <img v-if="book.image" v-bind:src="book.image.cloudImage">
       <img v-if="!book.image" src="https://res.cloudinary.com/escambook/image/upload/v1573856107/coverpic/default-coverpic.jpg">
-      <div id="book-info">
-        <span id="book-title">{{book.title}}</span>
-        <span id="book-author">{{book.author}}</span>
+      <div class="start-book-info-container">
+        <div class="start-book-info">
+          <span class="start-book-title">{{book.title}}</span>
+          <span class="start-book-author">{{book.author}}</span>
+          <span v-if="book.edition" class="start-book-edition">{{book.edition}}ª Edição</span>
+          <span v-if="book.publisher" class="start-book-edition">{{book.publisher}}</span>
+          <span v-if="book.publisher" class="start-book-edition">ISBN13: {{book.isbn}}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -21,35 +26,50 @@
   width: 100vw;
 }
 
-#book-card {
+.start-book-card {
   background-color: #eee;
-  box-shadow: -2px 4px 2px #666;
+  box-shadow: -1px 2px 2px #666;
   display: flex;
-  margin-top: 18px;
-  padding: 18px;
-  width: 100vw;
+  justify-content: space-evenly;
+  margin-top: 8px;
+  padding: 12px;
 }
 
-#book-card img {
+.start-book-card img {
   box-shadow: -4px 6px 4px #666;
-  width: 40%;
+  height: 135px;
+  width: 90px;
 }
 
-#book-info {
+.start-book-info-container {
   display: flex;
   flex-direction: column;
-  padding: 12px;
-  text-align: center;
-  width: 60%
+  text-align: left;
+  margin-left: 6px;
+  width: 60%;
 }
 
-#book-title {
-  font-size: 16pt;
+.start-book-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  text-align: left;
+  margin-left: 6px;
+}
+
+.start-book-title {
+  font-size: 13pt;
   font-weight: 700;
 }
 
-#book-author {
-  font-size: 14pt;
+.start-book-author {
+  font-size: 13pt;
+  font-style: italic;
+}
+
+.start-book-edition {
+  color: #444;
+  font-size: 11pt;
   font-style: italic;
 }
 </style>
