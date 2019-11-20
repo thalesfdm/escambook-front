@@ -65,6 +65,10 @@ export default {
       else {
         slider.style.left = "0px";
       }
+    },
+
+    searchBooks(){ 
+      this.$bus.$emit('searchString', this.searchString);
     }
 
   }
