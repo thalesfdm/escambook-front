@@ -52,14 +52,14 @@
     <div v-if="!isLogged" class="nav-welcome">
       <span>A maior rede social para troca de livros!</span>
       <form v-if="searchBar" class="nav-search">
-        <input placeholder="O que você procura? Livros, autores..."></input>
-        <button><img src="@/images/search.png" alt=""></button>
+        <input placeholder="O que você procura? Livros, autores..." v-model="searchString" v-on:keyup.enter="searchBooks"></input>
+        <button><img src="@/images/search.png" alt="" v-on:click="searchBooks"></button>
       </form>
     </div>
     <div v-if="isLogged && searchBar" class="nav-welcome">
       <form class="nav-search">
-        <input placeholder="O que você procura? Livros, autores..."></input>
-        <button><img src="@/images/search.png" alt=""></button>
+        <input placeholder="O que você procura? Livros, autores..." v-model="searchString" v-on:keyup.enter="searchBooks"></input>
+        <button><img src="@/images/search.png" alt="" v-on:click="searchBooks"></button>
       </form>
     </div>
   </div>
@@ -77,14 +77,14 @@
     <div v-if="!isLogged" class="nav-welcome">
       <span>A maior rede social para troca de livros!</span>
       <form v-if="searchBar" class="nav-search">
-        <input placeholder="O que você procura? Livros, autores..."></input>
-        <button><img src="@/images/search.png" alt=""></button>
+        <input placeholder="O que você procura? Livros, autores..." v-model="searchString" v-on:keyup.enter="searchBooks"></input>
+        <button><img src="@/images/search.png" alt="" v-on:click="searchBooks"></button>
       </form>
     </div>
     <div v-if="isLogged && searchBar" class="nav-welcome">
       <form class="nav-search">
-        <input placeholder="O que você procura? Livros, autores..."></input>
-        <button><img src="@/images/search.png" alt=""></button>
+        <input placeholder="O que você procura? Livros, autores..." v-model="searchString" v-on:keyup.enter="searchBooks"></input>
+        <button><img src="@/images/search.png" alt="" v-on:click="searchBooks"></button>
       </form>
     </div>
   </div>

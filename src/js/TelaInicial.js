@@ -13,6 +13,13 @@ export default {
     this.$bus.$emit('searchBar', true);
   },
 
+  created(){
+    this.$bus.$on('searchString', (value)=> { 
+      this.searchString = value;
+      this.getBooks();
+    });
+  },
+
   methods: {
 
     getAllBooks() {
@@ -25,6 +32,18 @@ export default {
           this.books = books;
         })
         .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    getBooks(){
+      axios
+        .get(`http://localhost:3900/api/books/search/title/${this.searchString}`)
+        .then((res) => {
+          this.books = res.data.books;
+        })
+        .catch((err) => {
+          this.books = {};
           console.log(err);
         });
     }
