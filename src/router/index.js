@@ -29,8 +29,7 @@ export const router = new Router({
   {
     path: '/',
     name: 'TelaInicial',
-    component: TelaInicial,
-    meta: { requiresLogout: true }
+    component: TelaInicial
   },
   {
     path: '/login',

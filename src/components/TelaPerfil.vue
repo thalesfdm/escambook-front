@@ -85,7 +85,7 @@
     <!-- inicio: BUSCAR LIVROS -->
     <div v-if="viewSearch" class="library-search-bar">
       <form class="nav-search">
-        <input v-model="searchString" placeholder="O que você procura? Livros, autores..."></input>
+        <input v-model="searchString" placeholder="O que você procura? Livros, autores...">
         <button v-on:click="getBooks"><img src="@/images/search.png" alt=""></button>
       </form>
     </div>
@@ -129,7 +129,7 @@
     <!-- inicio: TROCAR LIVRO -->
     <div v-if="viewSwap" class="library-search-bar">
       <form class="nav-search">
-        <input v-model="searchString" placeholder="O que você procura? Livros, autores..."></input>
+        <input v-model="searchString" placeholder="O que você procura? Livros, autores...">
         <button v-on:click="getBooks"><img src="@/images/search.png" alt=""></button>
       </form>
     </div>
@@ -157,39 +157,41 @@
     <div v-if="viewSwap" class="copies-found">
       <span>{{bookCopiesLength}} cópia(s) encontrada(s)!</span>
     </div>
-    <div v-if="viewSwap" class="copy-owner-card" v-for="owner in bookCopies" v-bind:key="owner.id">
-      <div class="copy-owner-info">
-        <img v-if="owner[0].user.image" v-bind:src="owner[0].user.image.cloudimage">
-        <img v-if="!owner[0].user.image" src="https://res.cloudinary.com/escambook/image/upload/v1573855303/profilepic/default-profilepic.png">
-        <div class="copy-owner-info-name-address">
-          <span style="font-weight: 700">{{owner[0].user.name}}</span>
-          <span style="font-size: 11pt">{{owner[0].user.address.city}} - {{owner[0].user.address.district}}</span>
+    <div v-if="viewSwap">
+      <div class="copy-owner-card" v-for="owner in bookCopies" v-bind:key="owner.id">
+        <div class="copy-owner-info">
+          <img v-if="owner[0].user.image" v-bind:src="owner[0].user.image.cloudimage">
+          <img v-if="!owner[0].user.image" src="https://res.cloudinary.com/escambook/image/upload/v1573855303/profilepic/default-profilepic.png">
+          <div class="copy-owner-info-name-address">
+            <span style="font-weight: 700">{{owner[0].user.name}}</span>
+            <span style="font-size: 11pt">{{owner[0].user.address.city}} - {{owner[0].user.address.district}}</span>
+          </div>
         </div>
-      </div>
-      <div v-for="copy in owner" v-bind:key="copy.id">
-        <div class="copy-info">
-          <div class="copy-info-wrapper" style="width: 20%;">
-            <img v-if="bookSwap.image" v-bind:src="bookSwap.image.cloudImage">
-            <img v-if="!bookSwap.image" src="https://res.cloudinary.com/escambook/image/upload/v1573856107/coverpic/default-coverpic.jpg">
-          </div>
-          <div class="copy-info-wrapper" style="width: 60%;">
-            <span v-if="copy.available && copy.user.id != user.id" style="color: green;">
-              &#x2714; Disponível
-            </span>
-            <span v-if="!copy.available && copy.user.id != user.id" style="color: gray;">
-              &#x1f6c7; Indisponível
-            </span>
-            <span v-if="copy.user.id == user.id" style="color: gray;">
-              &#x1f6c7; Sua cópia
-            </span>
-            <span style="color: gray;">
-              {{copy.condition}}
-            </span>
-          </div>
-          <div class="copy-info-wrapper" style="width: 20%;">
-            <button v-on:click="startSwap(copy, bookSwap)" v-bind:disabled="copy.user.id == user.id" class="library-book-button">
-              <img src="../images/swap.png">
-            </button>
+        <div v-for="copy in owner" v-bind:key="copy.id">
+          <div class="copy-info">
+            <div class="copy-info-wrapper" style="width: 20%;">
+              <img v-if="bookSwap.image" v-bind:src="bookSwap.image.cloudImage">
+              <img v-if="!bookSwap.image" src="https://res.cloudinary.com/escambook/image/upload/v1573856107/coverpic/default-coverpic.jpg">
+            </div>
+            <div class="copy-info-wrapper" style="width: 60%;">
+              <span v-if="copy.available && copy.user.id != user.id" style="color: green;">
+                &#x2714; Disponível
+              </span>
+              <span v-if="!copy.available && copy.user.id != user.id" style="color: gray;">
+                &#x1f6c7; Indisponível
+              </span>
+              <span v-if="copy.user.id == user.id" style="color: gray;">
+                &#x1f6c7; Sua cópia
+              </span>
+              <span style="color: gray;">
+                {{copy.condition}}
+              </span>
+            </div>
+            <div class="copy-info-wrapper" style="width: 20%;">
+              <button v-on:click="startSwap(copy, bookSwap)" v-bind:disabled="copy.user.id == user.id" class="library-book-button">
+                <img src="../images/swap.png">
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -208,33 +210,64 @@
         <span>Minhas</span>
       </div>
     </div>
-    <div v-if="viewPending && pendingSwaps === 'O'" v-for="swap in pending" v-bind:key="swap.id">
-      <div class="swap-user-card">
-        <div class="swap-user-info">
-          <img v-if="swap.swapusers[0].user.image" v-bind:src="swap.swapusers[0].user.image.cloudimage">
-          <img v-if="!swap.swapusers[0].user.image" src="https://res.cloudinary.com/escambook/image/upload/v1573855303/profilepic/default-profilepic.png">
-          <div class="swap-user-info-name-address">
-            <span style="font-weight: 700">{{swap.swapusers[0].user.name}}</span>
-            <span style="font-size: 11pt">{{swap.swapusers[0].user.address.city}} - {{swap.swapusers[0].user.address.district}}</span>
+    <div v-if="viewPending && pendingSwaps === 'O'">
+      <div v-for="swap in pending" v-bind:key="swap.id">
+        <div class="swap-user-card">
+          <div class="swap-user-info">
+            <img v-if="swap.swapusers[0].user.image" v-bind:src="swap.swapusers[0].user.image.cloudimage">
+            <img v-if="!swap.swapusers[0].user.image" src="https://res.cloudinary.com/escambook/image/upload/v1573855303/profilepic/default-profilepic.png">
+            <div class="swap-user-info-name-address">
+              <span style="font-weight: 700">{{swap.swapusers[0].user.name}}</span>
+              <span style="font-size: 11pt">{{swap.swapusers[0].user.address.city}} - {{swap.swapusers[0].user.address.district}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="swap-owner-copy-info">
+          <div class="swap-owner-copy-info-wrapper" style="width: 14%;">
+            <img v-if="swap.swapcopies[0].copy.book.image" v-bind:src="swap.swapcopies[0].copy.book.image.cloudimage">
+            <img v-if="!swap.swapcopies[0].copy.book.image" src="https://res.cloudinary.com/escambook/image/upload/v1573856107/coverpic/default-coverpic.jpg">
+          </div>
+          <div class="swap-owner-copy-info-wrapper" style="width: 86%;">
+            <span class="swap-owner-copy-title" style="font-weight: 700">{{swap.swapcopies[0].copy.book.title}}</span>
+            <span class="swap-owner-copy-author" style="font-style: italic">{{swap.swapcopies[0].copy.book.author}}</span>
+          </div>
+          <div style="display: flex;">
+            <button style="margin-right: 8px;" class="library-book-button" v-on:click="getBookCopies(book.id)">
+              <img src="../images/tick.png">
+            </button>
+            <button class="library-book-button" v-on:click="getBookCopies(book.id)">
+              <img src="../images/close.png">
+            </button>
           </div>
         </div>
       </div>
-      <div class="swap-owner-copy-info">
-        <div class="swap-owner-copy-info-wrapper" style="width: 14%;">
-          <img v-if="swap.swapcopies[0].copy.book.image" v-bind:src="swap.swapcopies[0].copy.book.image.cloudimage">
-          <img v-if="!swap.swapcopies[0].copy.book.image" src="https://res.cloudinary.com/escambook/image/upload/v1573856107/coverpic/default-coverpic.jpg">
+    </div>
+    <div v-if="viewPending && pendingSwaps === 'M'">
+      <div v-for="swap in pendingMine" v-bind:key="swap.id">
+        <div class="swap-user-card">
+          <div class="swap-owner-info">
+            <div class="swap-owner-info-name-address">
+              <span style="font-weight: 700">{{swap.swapcopies[0].copy.user.name}}</span>
+              <span style="font-size: 11pt">{{swap.swapcopies[0].copy.user.address.city}} - {{swap.swapcopies[0].copy.user.address.district}}</span>
+            </div>
+            <img v-if="swap.swapcopies[0].copy.user.image" v-bind:src="swap.swapcopies[0].copy.user.image.cloudimage">
+            <img v-if="!swap.swapcopies[0].copy.user.image" src="https://res.cloudinary.com/escambook/image/upload/v1573855303/profilepic/default-profilepic.png">
+          </div>
         </div>
-        <div class="swap-owner-copy-info-wrapper" style="width: 86%;">
-          <span class="swap-owner-copy-title" style="font-weight: 700">{{swap.swapcopies[0].copy.book.title}}</span>
-          <span class="swap-owner-copy-author" style="font-style: italic">{{swap.swapcopies[0].copy.book.author}}</span>
-        </div>
-        <div style="display: flex;">
-          <button style="margin-right: 8px;" class="library-book-button" v-on:click="getBookCopies(book.id)">
-            <img src="../images/tick.png">
-          </button>
+        <div class="swap-owner-copy-info">
           <button class="library-book-button" v-on:click="getBookCopies(book.id)">
             <img src="../images/close.png">
           </button>
+          <div class="swap-owner-copy-info-wrapper" style="width: 86%;">
+            <span class="swap-owner-copy-title" style="font-weight: 700">{{swap.swapcopies[0].copy.book.title}}</span>
+            <span class="swap-owner-copy-author" style="font-style: italic">{{swap.swapcopies[0].copy.book.author}}</span>
+          </div>
+          <div class="swap-owner-copy-info-wrapper" style="width: 14%;">
+            <img v-if="swap.swapcopies[0].copy.book.image" v-bind:src="swap.swapcopies[0].copy.book.image.cloudimage">
+            <img v-if="!swap.swapcopies[0].copy.book.image" src="https://res.cloudinary.com/escambook/image/upload/v1573856107/coverpic/default-coverpic.jpg">
+          </div>
+          <div style="display: flex;">
+          </div>
         </div>
       </div>
     </div>
@@ -465,7 +498,7 @@
 }
 
 .library-book-button:disabled img {
-  opacity: 0.20;
+  opacity: 0.2;
 }
 
 .my-copy-added-button {
@@ -597,6 +630,28 @@
   display: flex;
   flex-direction: column;
   margin-left: 12px;
+}
+
+.swap-owner-info {
+  background-color: #ddd;
+  align-items: center;
+  justify-content: flex-end;
+  display: flex;
+  padding: 8px;
+}
+
+.swap-owner-info>img {
+  border-radius: 32px;
+  box-shadow: -1px 2px 2px #666;
+  height: 32px;
+  width: 32px;
+}
+
+.swap-owner-info-name-address {
+  display: flex;
+  text-align: right;
+  flex-direction: column;
+  margin-right: 12px;
 }
 
 .swap-owner-copy-info {

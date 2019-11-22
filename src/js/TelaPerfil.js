@@ -139,6 +139,17 @@ export default {
         })
     },
 
+    getPendingMine() {
+      axios
+        .get('http://localhost:3900/api/swaps/pending/mine', { headers: { 'x-auth-token': this.token } })
+        .then((res) => {
+          this.pendingMine = res.data.swaps;
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+    },
+
     getUserCopies(id) {
       axios
         .get(`http://localhost:3900/api/users/${id}/books`, { headers: { 'x-auth-token': this.token } })
@@ -162,6 +173,7 @@ export default {
           this.user = res.data.user;
           this.copies = this.getUserCopies(this.user.id);
           this.pending = this.getPending();
+          this.pendingMine = this.getPendingMine();
         })
         .catch((err) => {
           localStorage.removeItem('x-auth-token');

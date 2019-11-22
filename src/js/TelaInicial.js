@@ -38,7 +38,7 @@ export default {
 
     getBooks(){
       axios
-        .get(`http://localhost:3900/api/books/search/title/${this.searchString}`)
+        .get(`http://localhost:3900/api/books/search/all/${this.searchString}`)
         .then((res) => {
           this.books = res.data.books;
         })
