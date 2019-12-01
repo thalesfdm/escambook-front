@@ -4,13 +4,25 @@
             <form @submit.prevent="sendForm">
                 <div class="form-group">
                     <span>Informações do livro</span>
-                    <input v-model="form['title']" type="text" placeholder="Título"></input>
-                    <input v-model="form['author']" type="text" placeholder="Autor"></input>
-                    <input v-model="form['isbn']" type="text" placeholder="ISBN"></input>
-                    <input v-model="form['publisher']" type="text" placeholder="Editora"></input>
-                    <input v-model="form['edition']" type="text" placeholder="Edição"></input>
-                    <input v-model="form['publicationYear']" type="text" placeholder="Ano de Publicação"></input>
-                    <input v-model="form['bookLanguage']" type="text" placeholder="Idioma"></input>
+                    <b-form-input v-model="form['title']" type="text" placeholder="Título" required="true"></b-form-input>
+                    <b-form-input v-model="form['author']" type="text" placeholder="Autor" required="true"></b-form-input>
+
+                    <b-form-group id="b-form-group">
+                        <b-form-input v-model="form['isbn']" type="text" maxlength="13" :state="isbnCheck" placeholder="ISBN" required="true"></b-form-input>
+                        <b-form-invalid-feedback>ISBN deve ser composto de 13 números</b-form-invalid-feedback>
+                    </b-form-group>
+
+                    <b-form-group id="b-form-group">
+                        <b-form-input v-model="form['publisher']" type="text" placeholder="Editora" required="true"></b-form-input>
+                    </b-form-group>
+
+                    <b-form-input v-model="form['edition']" type="text" placeholder="Edição" required="true"></b-form-input>
+
+                    <b-form-group id="b-form-group">
+                        <b-form-input v-model="form['publicationYear']" type="text" maxlength="4" :state="publicationYearCheck"  placeholder="Ano de Publicação" required="true"></b-form-input>
+                    </b-form-group>
+
+                    <b-form-input v-model="form['bookLanguage']" type="text" placeholder="Idioma" required="true"></b-form-input>
                 </div>
                 <div id="submit-buttons">
                     <router-link :to="{name: 'TelaInicial'}">
@@ -69,6 +81,12 @@
     .form-group {
         display: flex;
         flex-direction: column;
+    }
+
+    #b-form-group {
+        margin: 0px !important;
+        text-align: left;
+        font-size: 13pt
     }
 </style>
 

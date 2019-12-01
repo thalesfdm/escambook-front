@@ -45,5 +45,25 @@ export default {
                     console.log(e)
                 })
         }
+    },
+
+    computed: {
+        isbnCheck(){
+            if(!this.form.isbn == ''){
+                var numberRegex = new RegExp('[0-9]')
+                return numberRegex.test(this.form.isbn) && this.form.isbn.length == 11 ? true : false
+            }
+
+            return null
+        },
+
+        publicationYearCheck(){
+            if(!this.form.publicationYear == ''){
+                var numberRegex = new RegExp('[0-9]')
+                return numberRegex.test(this.form.publicationYear) && this.form.publicationYear.length == 11 ? true : false
+            }
+
+            return null
+        }
     }
 }
