@@ -34,9 +34,9 @@ export default {
   },
 
   created() {
-    if ('$route.params.bookId') {
+    if (this.$route.params.bookId) {
       this.getBookCopies(this.$route.params.bookId);
-    } 
+    }
   },
 
   watch: {
@@ -60,6 +60,19 @@ export default {
   },
 
   methods: {
+
+    acceptSwap(swapId) {
+      axios
+        .put(`http://localhost:3900/api/swaps/${swapId}/accept`, {},
+          { headers: { 'x-auth-token': this.token } })
+        .then((res) => {
+          this.getPending();
+          alert('Solicitação aceita!');
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+    },
 
     addCopy(bookId) {
       axios
@@ -94,8 +107,14 @@ export default {
         .put(`http://localhost:3900/api/swaps/${swapId}/cancel`, {},
           { headers: { 'x-auth-token': this.token } })
         .then((res) => {
-          if(this.pendingSwaps === 'M') this.getPendingMine();
-          else this.getPending();
+          if (this.pendingSwaps === 'M') {
+            this.getPendingMine();
+            alert('Solicitação cancelada!');
+          }
+          else {
+            this.getPending();
+            alert('Solicitação rejeitada!');
+          }
         })
         .catch((err) => {
           console.log(err);

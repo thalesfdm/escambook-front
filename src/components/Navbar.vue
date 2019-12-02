@@ -13,19 +13,19 @@
             <span>Olá <b>{{name}}</b>!</span>
           </div>
           <div id="nav-menu">
+            <router-link :to="{name: 'TelaInicial'}">
+              <div v-on:click="slideToggle" class="nav-menu-item">
+                <span>Mural de Livros</span>
+              </div>
+            </router-link>
             <router-link :to="{name: 'TelaPerfil'}">
               <div v-on:click="slideToggle" class="nav-menu-item">
-                <span>Meu perfil</span>
+                <span>Minha Biblioteca</span>
               </div>
             </router-link>
             <router-link :to="{name: 'TelaCadastroLivro'}">
               <div v-on:click="slideToggle" class="nav-menu-item">
                 <span>Cadastrar livro</span>
-              </div>
-            </router-link>
-            <router-link :to="{name: 'TelaPerfil'}">
-              <div v-on:click="slideToggle" class="nav-menu-item">
-                <span>...</span>
               </div>
             </router-link>
           </div>
