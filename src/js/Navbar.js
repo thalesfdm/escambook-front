@@ -7,6 +7,7 @@ export default {
       isLogged: this.checkIfIsLogged(),
       name: null,
       searchBar: true,
+      searchString: '',
       token: localStorage.getItem('x-auth-token') || null
     }
   },

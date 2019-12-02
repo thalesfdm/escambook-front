@@ -1,10 +1,13 @@
 import axios from 'axios'
+import { router } from '@/router'
 import { sampleSize, shuffle } from 'lodash'
 
 export default {
   data() {
     return {
-      books: {}
+      addBook: [],
+      books: {},
+      isLogged: this.checkIfIsLogged()
     }
   },
 
@@ -22,7 +25,35 @@ export default {
 
   methods: {
 
+    addCopy(bookId) {
+      axios
+        .post('http://localhost:3900/api/users/books/add',
+          {
+            bookId,
+            condition: 'Exemplar em boas condições'
+          }
+          , { headers: { 'x-auth-token': this.token } })
+        .then((res) => {
+          this.addBook.push(`add-book-${bookId}`);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+    },
+
+    checkIfIsLogged() {
+      const token = localStorage.getItem('x-auth-token');
+      if (token) {
+        this.token = token;
+        return true;
+      } else {
+        this.token = null;
+        return false;
+      }
+    },
+
     getAllBooks() {
+      this.isLogged = this.checkIfIsLogged()
       axios
         .get('http://localhost:3900/api/books')
         .then((res) => {
@@ -34,6 +65,10 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+
+    getBookCopies(bookId) {
+      router.push({ name: 'TelaPerfil', params: { bookId } });
     },
 
     getBooks(){

@@ -232,10 +232,10 @@
             <span class="swap-owner-copy-author" style="font-style: italic">{{swap.swapcopies[0].copy.book.author}}</span>
           </div>
           <div style="display: flex;">
-            <button style="margin-right: 8px;" class="library-book-button" v-on:click="getBookCopies(book.id)">
+            <button style="margin-right: 8px;" class="library-book-button">
               <img src="../images/tick.png">
             </button>
-            <button class="library-book-button" v-on:click="getBookCopies(book.id)">
+            <button class="library-book-button" v-on:click="cancelSwap(swap.id)">
               <img src="../images/close.png">
             </button>
           </div>
@@ -255,7 +255,7 @@
           </div>
         </div>
         <div class="swap-owner-copy-info">
-          <button class="library-book-button" v-on:click="getBookCopies(book.id)">
+          <button class="library-book-button" v-on:click="cancelSwap(swap.id)">
             <img src="../images/close.png">
           </button>
           <div class="swap-owner-copy-info-wrapper" style="width: 86%;">

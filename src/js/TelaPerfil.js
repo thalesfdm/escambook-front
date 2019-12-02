@@ -33,6 +33,12 @@ export default {
     this.$bus.$emit('searchBar', false);
   },
 
+  created() {
+    if ('$route.params.bookId') {
+      this.getBookCopies(this.$route.params.bookId);
+    } 
+  },
+
   watch: {
 
     ordenarBiblioteca: function (val) {
@@ -50,6 +56,7 @@ export default {
         this.books = sortBy(this.books, ['title']);
       }
     }
+
   },
 
   methods: {
@@ -76,6 +83,19 @@ export default {
           { headers: { 'x-auth-token': this.token } })
         .then((res) => {
           this.removeBook.push(`remove-book-${copyId}`);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+    },
+
+    cancelSwap(swapId) {
+      axios
+        .put(`http://localhost:3900/api/swaps/${swapId}/cancel`, {},
+          { headers: { 'x-auth-token': this.token } })
+        .then((res) => {
+          if(this.pendingSwaps === 'M') this.getPendingMine();
+          else this.getPending();
         })
         .catch((err) => {
           console.log(err);

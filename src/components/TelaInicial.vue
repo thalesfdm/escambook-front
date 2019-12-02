@@ -2,8 +2,8 @@
 <div id="main-wrapper">
   <div id="start-book-container">
     <div class="start-book-card" v-for="book in books" v-bind:key="book.id">
-      <img v-if="book.image" v-bind:src="book.image.cloudImage">
-      <img v-if="!book.image" src="https://res.cloudinary.com/escambook/image/upload/v1573856107/coverpic/default-coverpic.jpg">
+      <img class="start-book-card-img" v-if="book.image" v-bind:src="book.image.cloudImage">
+      <img class="start-book-card-img" v-if="!book.image" src="https://res.cloudinary.com/escambook/image/upload/v1573856107/coverpic/default-coverpic.jpg">
       <div class="start-book-info-container">
         <div class="start-book-info">
           <span class="start-book-title">{{book.title}}</span>
@@ -12,6 +12,17 @@
           <span v-if="book.publisher" class="start-book-edition">{{book.publisher}}</span>
           <span v-if="book.publisher" class="start-book-edition">ISBN13: {{book.isbn}}</span>
         </div>
+      </div>
+      <div v-if="isLogged" class="library-book-button-menu">
+        <button v-if="!addBook.includes(`add-book-${book.id}`)" v-on:click="addCopy(book.id)" class="library-book-button" v-bind:id="`add-book-${book.id}`">
+          <img src="../images/plus.png">
+        </button>
+        <button disabled v-if="addBook.includes(`add-book-${book.id}`)" class="my-copy-added-button" v-bind:id="`add-book-${book.id}`">
+          <img src="../images/tick.png">
+        </button>
+        <button class="library-book-button" v-on:click="getBookCopies(book.id)">
+          <img src="../images/swap.png">
+        </button>
       </div>
     </div>
   </div>
@@ -35,7 +46,7 @@
   padding: 12px;
 }
 
-.start-book-card img {
+.start-book-card-img {
   box-shadow: -4px 6px 4px #666;
   height: 135px;
   width: 90px;
@@ -71,6 +82,48 @@
   color: #444;
   font-size: 11pt;
   font-style: italic;
+}
+
+.library-book-button-menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.library-book-button,
+.my-copy-added-button {
+  display: flex;
+  border-radius: 32px;
+  border: solid 1px #ddd;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  width: 36px;
+  height: 36px;
+}
+
+.library-book-button {
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.library-book-button:disabled {
+  background-color: #eee;
+  cursor: auto;
+}
+
+.library-book-button:disabled img {
+  opacity: 0.2;
+}
+
+.my-copy-added-button {
+  background-color: #ddffdd;
+}
+
+.library-book-button img,
+.my-copy-added-button img {
+  width: 20px;
+  height: 20px;
 }
 </style>
 

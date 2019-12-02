@@ -57,6 +57,7 @@
       </form>
     </div>
     <div v-if="isLogged && searchBar" class="nav-welcome">
+    <span style="font-weight: 700; font-size: 16pt;">Mural de Livros</span>
       <form class="nav-search">
         <input placeholder="O que você procura? Livros, autores..." v-model="searchString" v-on:keyup.enter="searchBooks"></input>
         <button><img src="@/images/search.png" alt="" v-on:click="searchBooks"></button>
@@ -82,6 +83,7 @@
       </form>
     </div>
     <div v-if="isLogged && searchBar" class="nav-welcome">
+      <span style="font-weight: 700; font-size: 16pt;">Mural de Livros</span>
       <form class="nav-search">
         <input placeholder="O que você procura? Livros, autores..." v-model="searchString" v-on:keyup.enter="searchBooks"></input>
         <button><img src="@/images/search.png" alt="" v-on:click="searchBooks"></button>
