@@ -112,7 +112,7 @@ export default {
 
     cpfCheck(){
       if(!this.form.cpf == ''){
-        var numberRegex = new RegExp('[0-9]')
+        var numberRegex = new RegExp('^[0-9]*$')
         return ValidateCPF(this.form.cpf) && numberRegex.test(this.form.cpf) ? true : false
       }
 
@@ -146,7 +146,7 @@ export default {
 
     postalCodeCheck(){
       if(!this.form.postalCode == ''){
-        var numberRegex = new RegExp('[0-9]')
+        var numberRegex = new RegExp('^[0-9]*$')
         return this.form.postalCode.length == 8 && numberRegex.test(this.form.postalCode) ? true : false
       }
       
@@ -162,7 +162,7 @@ export default {
 
     houserNumberCheck(){
       if(!this.form.houseNumber == ''){
-        var numberRegex = new RegExp('[0-9]')
+        var numberRegex = new RegExp('^[0-9]*$')
         return numberRegex.test(this.form.houseNumber)
       }
 
@@ -171,7 +171,7 @@ export default {
 
     phoneCheck(){
       if(!this.form.phone == ''){
-        var numberRegex = new RegExp('[0-9]')
+        var numberRegex = new RegExp('^[0-9]*$')
         return numberRegex.test(this.form.phone) && this.form.phone.length == 11 ? true : false
       }
       

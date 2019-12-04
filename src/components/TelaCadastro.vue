@@ -14,7 +14,7 @@
         
         <b-form-group id="b-form-group">
           <b-form-input id="input-style" v-model="form['password']" type="password" maxlength="16" :state="passwordState" placeholder="Senha"></b-form-input>
-          <b-form-invalid-feedback>Senha deve ter entre 4 e 16 caractéres</b-form-invalid-feedback>
+          <b-form-invalid-feedback>Deve conter entre 4 e 16 caracteres</b-form-invalid-feedback>
         </b-form-group>
 
         <b-form-group id="b-form-group">
@@ -40,32 +40,32 @@
         <span>Informações de contato</span>
         <b-form-group id="b-form-group">
           <b-form-input id="input-style" v-model="form['city']" type="text" maxlength="60" :state="cityCheck" placeholder="Cidade"></b-form-input>
-          <b-form-invalid-feedback>Cidade deve ter no mínimo 4 caractéres</b-form-invalid-feedback>
+          <b-form-invalid-feedback>Deve conter no mínimo 4 caracteres</b-form-invalid-feedback>
         </b-form-group>
 
         <b-form-group id="b-form-group">
           <b-form-input id="input-style" v-model="form['district']" type="text" maxlength="2" :state="districtCheck" placeholder="Estado"></b-form-input>
-          <b-form-invalid-feedback>Distrito deve ter 2 caractéres</b-form-invalid-feedback>
+          <b-form-invalid-feedback>Deve conter 2 caracteres</b-form-invalid-feedback>
         </b-form-group>
 
         <b-form-group id="b-form-group">
           <b-form-input id="input-style" v-model="form['postalCode']" type="text" maxlength="8" :state="postalCodeCheck" placeholder="CEP"></b-form-input>
-          <b-form-invalid-feedback>CEP deve ter 8 caractéres</b-form-invalid-feedback>
+          <b-form-invalid-feedback>CEP deve conter 8 números</b-form-invalid-feedback>
         </b-form-group>
 
         <b-form-group id="b-form-group">
           <b-form-input id="input-style" v-model="form['street']" type="text" maxlength="60" :state="streetCheck" placeholder="Rua"></b-form-input>
-          <b-form-invalid-feedback>Rua deve ter no mínimo 4 caractéres</b-form-invalid-feedback>
+          <b-form-invalid-feedback>Deve conter no mínimo 4 caracteres</b-form-invalid-feedback>
         </b-form-group>
         
         <b-form-group id="b-form-group">
           <b-form-input id="input-style" v-model="form['houseNumber']" type="text" maxlength="6" :state="houserNumberCheck" placeholder="Número da casa"></b-form-input>
-          <b-form-invalid-feedback>Número da casa deve ser numérico</b-form-invalid-feedback>
+          <b-form-invalid-feedback>Deve ser numérico</b-form-invalid-feedback>
         </b-form-group>
 
         <b-form-group id="b-form-group">
           <b-form-input id="input-style" v-model="form['phone']" type="text" maxlength="11" :state="phoneCheck" placeholder="Telefone para contato"></b-form-input>
-          <b-form-invalid-feedback>Número deve conter 11 números</b-form-invalid-feedback>
+          <b-form-invalid-feedback>Deve conter 11 números</b-form-invalid-feedback>
         </b-form-group>
       </div>
       <div id="submit-buttons">
@@ -113,13 +113,13 @@
   margin-bottom: 32px;
 }
 
-#input-style{
+#input-style {
   background-color: #fff;
   border-radius: 4px;
   border-style: none;
   margin-top: 8px;
   padding: 12px 18px;
-  width: 60vw;
+  width: 100% !important;
 }
 
 .form-group {

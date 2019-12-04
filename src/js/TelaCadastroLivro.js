@@ -50,8 +50,8 @@ export default {
     computed: {
         isbnCheck(){
             if(!this.form.isbn == ''){
-                var numberRegex = new RegExp('[0-9]')
-                return numberRegex.test(this.form.isbn) && this.form.isbn.length == 11 ? true : false
+                var numberRegex = new RegExp('^[0-9]*$')
+                return numberRegex.test(this.form.isbn) && this.form.isbn.length == 13 ? true : false
             }
 
             return null
@@ -59,8 +59,8 @@ export default {
 
         publicationYearCheck(){
             if(!this.form.publicationYear == ''){
-                var numberRegex = new RegExp('[0-9]')
-                return numberRegex.test(this.form.publicationYear) && this.form.publicationYear.length == 11 ? true : false
+                var numberRegex = new RegExp('^[0-9]*$')
+                return numberRegex.test(this.form.publicationYear) && this.form.publicationYear.length == 4 ? true : false
             }
 
             return null
