@@ -51,6 +51,7 @@ export default {
       this.isLogged = this.checkIfIsLogged();
       this.name = null;
       this.token = null;
+      this.$bus.$emit('loggedIn', false);
       router.push("/");
     },
 

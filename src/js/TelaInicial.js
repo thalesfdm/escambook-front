@@ -17,6 +17,9 @@ export default {
   },
 
   created(){
+    this.$bus.$on('loggedIn', () => {
+      this.isLogged = this.checkIfIsLogged();
+    }),
     this.$bus.$on('searchString', (value)=> { 
       this.searchString = value;
       this.getBooks();

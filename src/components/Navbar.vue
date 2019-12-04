@@ -208,7 +208,7 @@
   border-right: #666 solid 4px;
   position: fixed;
   left: -90%;
-  top: 68px;
+  top: 72px;
   width: 90%;
   height: 0px;
   transition: left 0.15s linear;
